@@ -1,0 +1,36 @@
+function populateOverlay(name, desc, git, linkedin, xing, facebook) {
+
+    var overlay = document.getElementById("info");
+    overlay.style.display = "block";
+    overlay.innerHTML = "<div>" + name + "</div><div>" + desc + "</div><div>" + git + "</div><div>" + linkedin + " </div><div>" + xing + "</div><div>" + facebook + "</div>";
+
+}
+
+function off() {
+    var overlay = document.getElementById("info");
+    overlay.style.display = "none";
+}
+
+function UpdateTextArea() {
+    var fieldName = "overview_employer_name"; //your field name
+    var newValue = "Alex"; //your new value
+    var value = document.getElementById("post-title-0").value;
+    value = "," + value; //add a comma so we can ensure we don't replace the wrong value where the fieldname is a substring of another fieldname
+    if(value.indexOf("," + fieldName + "=") > 0) //see if a value is already defined
+    {
+        var index = value.indexOf("," + fieldName + "=") + fieldName.length + 2;
+        var start = value.substring(0, index); //get the portion before the value
+        var end = value.substring(index); //get everything else
+        if(end.indexOf(",") > 0)
+        {
+            end = end.substring(end.indexOf(",")); //remove the value by reducing the end to the location of the next comma
+        }else{
+            end = ""; //if there isn't another comma it was the last value in the list, so set the new end to nothing
+        }
+        value = start + newValue + end; 
+        value = value.substring(1); //remove the starting comma we gave it
+        document.getElementById("post-title-0").value = value;
+    }else{
+        //append it to the end as you are already doing
+    }
+}

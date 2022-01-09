@@ -1,0 +1,193 @@
+<?php
+
+/**
+ * @package InpsydeEmployees
+ */
+/*
+ * Plugin Name: Inpsyde Employees Plugin
+ * Plugin URI: https://red-beret.com/inpsyde-employees
+ * Description: Employees Overview plugin for Inpsyde project.
+ * version: 1.0.0
+ * Author: Adi Glibanovic
+ * Author URI: https://rberet.com
+ * License: GPLv2 or later
+ * Text Domain: inpsyde-employees
+ * Domain Path: /languages
+ */
+//if this file is called firectly, ABORT!!
+defined('ABSPATH') or die('Hey.Stop there attempt failed');
+//Require once the composer autoload
+if (file_exists(dirname(__FILE__) . '/vendor/autoload.php')) {
+    require_once dirname(__FILE__) . '/vendor/autoload.php';
+}
+
+/**
+ * This code runs during the plugin activation
+ */
+function activate_employer_plugin()
+{
+    require_once plugin_dir_path(__FILE__) . 'inc/Base/Activate.php';
+    Inc\Base\Activate::activate();
+}
+
+register_activation_hook(__FILE__, 'activate_employer_plugin');
+
+/**
+ * This code runs during the plugin deactivation
+ */
+function deactivate_employer_plugin()
+{
+    require_once plugin_dir_path(__FILE__) . '/inc/Base/Deactivate.php';
+    Inc\Base\Deactivate::Deactivate();
+}
+
+register_deactivation_hook(__FILE__, 'deactivate_employer_plugin');
+/**
+ * Initialize all the core classes of the plugin
+ */
+if (class_exists('Inc\\Init')) {
+    Inc\Init::register_services();
+}
+// Define path and URL to the ACF plugin.
+// Get plugin Path directory
+define('FP_PLUGIN_PATH', plugin_dir_path(__FILE__));
+define('FP_PLUGIN_URI', plugin_dir_url(__FILE__));
+define('MY_ACF_PATH', plugin_dir_path(__FILE__) . '/includes/acf/');
+define('MY_ACF_URL', plugin_dir_url(__FILE__) . '/includes/acf/');
+define('MY_ACFE_PATH', plugin_dir_path(__FILE__) . '/includes/acfe/');
+define('MY_ACFE_URL', plugin_dir_url(__FILE__) . '/includes/acfe/');
+include_once(MY_ACF_PATH . 'acf.php');
+include_once(MY_ACFE_PATH . 'acf-extended.php');
+
+// Customize the url setting to fix incorrect asset URLs.
+add_filter('acf/settings/url', 'my_acf_settings_url');
+
+function my_acf_settings_url($url)
+{
+    return MY_ACF_URL;
+}
+
+add_filter('acf/settings/acfe/url', 'my_acfe_settings_url');
+
+function my_acfe_settings_url($url)
+{
+    return MY_ACFE_URL;
+}
+
+// (Optional) Hide the ACF admin menu item.
+add_filter('acf/settings/show_admin', 'my_acf_settings_show_admin');
+
+function my_acf_settings_show_admin($show_admin)
+{
+    return false;
+}
+
+if (function_exists('acf_add_local_field_group')):
+    acf_add_local_field_group(array(
+        'key' => 'group_displemploy',
+        'title' => 'Inpsyde block',
+        'fields' => array(
+            array(
+                'key' => 'field_61cabd78a84aa',
+                'label' => __('Choose employee for display, or leave empty to display all!', 'inpsyde-employees'),
+                'name' => 'choose_employee_for_display',
+                'type' => 'post_object',
+                'instructions' => '',
+                'required' => 0,
+                'conditional_logic' => 0,
+                'wrapper' => array(
+                    'width' => '',
+                    'class' => '',
+                    'id' => '',
+                ),
+                'post_type' => array(
+                    0 => 'employer',
+                ),
+                'taxonomy' => '',
+                'allow_null' => 1,
+                'multiple' => 1,
+                'min' => '',
+                'max' => '',
+                'return_format' => 'id',
+                'acfe_add_post' => 0,
+                'acfe_edit_post' => 0,
+                'save_custom' => 0,
+                'save_post_status' => 'publish',
+                'acfe_bidirectional' => array(
+                    'acfe_bidirectional_enabled' => '0',
+                ),
+                'acfe_field_group_condition' => 0,
+                'ui' => 1,
+            ),
+        ),
+        'location' => array(
+            array(
+                array(
+                    'param' => 'block',
+                    'operator' => '==',
+                    'value' => 'acf/employees-inp',
+                ),
+                array(
+                    'param' => 'acfe_template',
+                    'operator' => '==',
+                    'value' => '169',
+                ),
+            ),
+        ),
+        'menu_order' => 0,
+        'position' => 'acf_after_title',
+        'style' => 'default',
+        'label_placement' => 'top',
+        'instruction_placement' => 'label',
+        'hide_on_screen' => '',
+        'active' => true,
+        'description' => __('Choose employee for display, or leave empty to display all!', 'inpsyde-employees'),
+        'show_in_rest' => 1,
+        'acfe_autosync' => '',
+        'acfe_form' => 0,
+        'acfe_display_title' => '',
+        'acfe_meta' => '',
+        'acfe_note' => '',
+    ));
+endif;
+
+if (function_exists('acf_register_block_type')):
+    acf_register_block_type(array(
+        'name' => 'employees_inp',
+        'title' => 'Employees',
+        'description' => __('Gutenberg block to allow select and insert employees into shortcode to display them on frontend.', 'inpsyde-employees'),
+        'category' => 'common',
+        'keywords' => array(
+            0 => 'employees',
+            1 => 'shortcode',
+            2 => 'display',
+            3 => 'frontend',
+        ),
+        'post_types' => array(
+            0 => 'post',
+            1 => 'page',
+        ),
+        'mode' => 'preview',
+        'align' => '',
+        'align_content' => null,
+        'render_template' => FP_PLUGIN_PATH . 'templates/employees.php',
+        'render_callback' => '',
+        'enqueue_style' => '',
+        'enqueue_script' => '',
+        'enqueue_assets' => '',
+        'icon' => array(
+            'background' => '#000000',
+            'foreground' => '#ffffff',
+            'src' => 'admin-users',
+        ),
+        'supports' => array(
+            'align' => true,
+            'mode' => true,
+            'multiple' => true,
+            'jsx' => false,
+            'align_content' => false,
+            'anchor' => false,
+        ),
+        'active' => true,
+    ));
+endif;

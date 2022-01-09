@@ -1,0 +1,17 @@
+{
+    "name": "rberet/inpsyde-employees",
+    "description": "Awsome starter plugin",
+    "type": "project",
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "Adi Glibanovic",
+            "email": "rberet@rberet.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload":{
+        "psr-4":{"Inc\\":"./inc"}
+    }
+}

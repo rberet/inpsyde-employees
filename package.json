@@ -1,0 +1,49 @@
+{
+    "name": "inpsyde-employees",
+    "version": "1.0.0",
+    "description": "This is my Inpsyde Employees Plugin ",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "wordpress",
+        "plugin",
+        "PHP",
+        "composer",
+        "gulp",
+        "es6",
+        "scss"
+    ],
+    "author": "Adi Glibanovic",
+    "license": "GPLv2 or later",
+    "devDependencies": {
+        "@babel/cli": "^7.16.7",
+        "@babel/core": "^7.16.7",
+        "@babel/preset-env": "^7.16.7",
+        "@babel/register": "^7.16.7",
+        "babel-core": "^6.26.3",
+        "babel-preset-env": "^1.7.0",
+        "babelify": "^10.0.0",
+        "browser-sync": "^2.26.7",
+        "browserify": "^16.5.0",
+        "gulp": "^4.0.2",
+        "gulp-autoprefixer": "^7.0.1",
+        "gulp-rename": "^1.4.0",
+        "gulp-sass": "^5.1.0",
+        "gulp-sourcemaps": "^2.6.5",
+        "gulp-uglify": "^3.0.2",
+        "vinyl-buffer": "^1.0.1",
+        "vinyl-source-stream": "^2.0.0"
+    },
+    "dependencies": {
+        "chokidar": "^3.3.0",
+        "code-prettify": "^0.1.0",
+        "sass": "^1.46.0"
+    },
+    "babel": {
+        "presets": [
+            "@babel/preset-env"
+        ]
+    }
+}
